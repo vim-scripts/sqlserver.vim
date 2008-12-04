@@ -1,8 +1,11 @@
 " Vim syntax file
+"
 " Language:     SQL Server 2008 TSQL
 " Maintainer:   Ben Hoffstein <benjamin.hoffstein AT red-hook.com>
-" Last Change:  2008-11-18
-" Version:      1.0.0
+" Last Change:  2008-12-04
+" Version:      1.0.1
+"
+" HINT: Type zR if you don't know how to use folds
 "
 " Options:
 "
@@ -29,6 +32,10 @@ elseif exists("b:current_syntax")
   finish
 endif
 
+" Always ignore case
+syn case ignore
+
+" Option defaults {{{
 if !exists("sqlserver_highlight_future")
     let sqlserver_highlight_future = 1
 endif
@@ -41,11 +48,9 @@ endif
 if !exists("sqlserver_highlight_server_opts")
     let sqlserver_highlight_server_opts = 1
 endif
+" }}}
 
-" Always ignore case
-syn case ignore
-
-" TSQL keywords
+" TSQL keywords {{{
 syn keyword tsqlKeyword add all and any as asc authorization
 syn keyword tsqlKeyword backup begin between break browse bulk by
 syn keyword tsqlKeyword cascade case check checkpoint close
@@ -96,8 +101,9 @@ syn keyword tsqlKeyword use user
 syn keyword tsqlKeyword values varying view
 syn keyword tsqlKeyword waitfor when where while with writetext
 syn match tsqlKeyword "\<year\>"
+" }}}
 
-" odbc keywords
+" odbc keywords {{{
 syn keyword odbcKeyword absolute action ada add all allocate
 syn keyword odbcKeyword and any are as asc assertion
 syn keyword odbcKeyword at authorization 
@@ -157,8 +163,9 @@ syn keyword odbcKeyword usage user using
 syn keyword odbcKeyword value values varchar varying view
 syn keyword odbcKeyword when whenever where with work write
 syn keyword odbcKeyword zone
+" }}}
 
-" Future keywords (as defined by Microsoft)
+" Future keywords (as defined by Microsoft) {{{
 if exists("sqlserver_highlight_future") && sqlserver_highlight_future != 0
     syn keyword futureKeyword absolute action admin after aggregate
     syn keyword futureKeyword alias allocate are array asensitive
@@ -244,8 +251,13 @@ if exists("sqlserver_highlight_future") && sqlserver_highlight_future != 0
     syn keyword futureKeyword xmltext xmlvalidate
     syn keyword futureKeyword zone
 endif
+" }}}
 
-" System stored procedures
+" Undocumented keywords {{{
+syn keyword undocumentedKeyword persisted openxml
+" }}}
+
+" System stored procedures {{{
 if exists("sqlserver_highlight_system_procs") && sqlserver_highlight_system_procs != 0
     syn keyword systemProc sp_ActiveDirectory_Obj
     syn keyword systemProc sp_ActiveDirectory_SCP
@@ -954,17 +966,21 @@ if exists("sqlserver_highlight_system_procs") && sqlserver_highlight_system_proc
     syn keyword systemProc xp_startmail
     syn keyword systemProc xp_stopmail
 endif
+" }}}
 
-" Special values
+" Special values {{{
 syn keyword tsqlSpecial false null true
+" }}}
 
-" User variables
+" User variables {{{
 syn match tsqlVariable "@\a[a-zA-Z0-9@$#_]*\>"
+" }}}
 
-" Temp tables
-syn match tsqlTempTable "\<#\{1,2}\a[a-zA-Z0-9@$#_]*\>"
+" Temp tables {{{
+syn match tsqlTempTable "#\{1,2}\a[a-zA-Z0-9@$#_]*\>"
+" }}}
 
-" System variables
+" System variables {{{
 if exists("sqlserver_highlight_system_vars") && sqlserver_highlight_system_vars != 0
     syn match tsqlSystemVariable "@@CONNECTIONS"
     syn match tsqlSystemVariable "@@CPU_BUSY"
@@ -1000,20 +1016,24 @@ if exists("sqlserver_highlight_system_vars") && sqlserver_highlight_system_vars 
     syn match tsqlSystemVariable "@@TRANCOUNT"
     syn match tsqlSystemVariable "@@VERSION"
 endif
+" }}}
 
-" Comments
+" Comments {{{
 syn region tsqlComment start="/\*"  end="\*/" contains=tsqlTodo
 syn match tsqlComment "--.*$" contains=tsqlTodo
 syn sync ccomment tsqlComment
+" }}}
 
-" Strings
+" Strings {{{
 syn region tsqlString start=+'+ end=+'+
 syn region tsqlString start=+"+ end=+"+
+" }}}
 
-" Numbers
+" Numbers {{{
 syn match tsqlNumber "-\=\<\d*\.\=[0-9_]\>"
+" }}}
 
-" Data types
+" Data types {{{
 syn keyword tsqlType int bigint binary bit char CLR cursor
 syn keyword tsqlType date datetime datetime2 datetimeoffset decimal
 syn keyword tsqlType float hierarchyid image int money nchar ntext
@@ -1022,22 +1042,26 @@ syn keyword tsqlType smalldatetime smallint smallmoney sql_variant
 syn keyword tsqlType text time timestamp
 syn keyword tsqlType varbinary varchar uniqueidentifier xml
 syn match tsqlType "\<table\>"
+" }}}
 
-" Table actions
+" Table actions {{{
 syn match tsqlTableAction "\<\(CREATE\|ALTER\|TRUNCATE\|DROP\)\sTABLE\>"
+" }}}
 
-" Operators
+" Operators {{{
 syn keyword tsqlOperator not and or
 syn keyword tsqlOperator in any some all between exists
 syn keyword tsqlOperator like escape
 syn keyword tsqlOperator union intersect minus
 syn keyword tsqlOperator prior distinct
 syn keyword tsqlOperator sysdate out
+" }}}
 
-" To do
+" To do {{{
 syn keyword tsqlTodo contained TODO FIXME NOTE
+" }}}
 
-" Options
+" Options {{{
 if exists("sqlserver_highlight_server_opts") && sqlserver_highlight_server_opts != 0
     syn match svrOption "\<SET ANSI_DEFAULTS \(ON\|OFF\)\>"
     syn match svrOption "\<SET ANSI_NULL_DFLT_OFF \(ON\|OFF\)\>"
@@ -1079,8 +1103,9 @@ if exists("sqlserver_highlight_server_opts") && sqlserver_highlight_server_opts 
     syn match svrOption "\<SET TRANSACTION ISOLATION LEVEL \(READ UNCOMMITED\|READ COMMITTED\|REPEATABLE READ\|SNAPSHOT\|SERIALIZABLE\)\>"
     syn match svrOption "\<SET XACT_ABORT \(ON\|OFF\)\>"
 endif
+" }}}
 
-" TSQL functions
+" TSQL functions {{{
 syn match tsqlFunction "\<AVG("he=e-1
 syn match tsqlFunction "\<CHECKSUM_AGG("he=e-1
 syn match tsqlFunction "\<COUNT("he=e-1
@@ -1215,6 +1240,7 @@ syn match tsqlFunction "\<SYSTEM_USER("he=e-1
 syn match tsqlFunction "\<UPDATE("he=e-1
 syn match tsqlFunction "\<USER_NAME("he=e-1
 syn match tsqlFunction "\<XACT_STATE("he=e-1
+" }}}
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
@@ -1230,7 +1256,8 @@ if version >= 508 || !exists("did_tsql_syn_inits")
   HiLink tsqlKeyword Statement
   HiLink odbcKeyword Statement
   HiLink futureKeyword Statement
-  HiLink tsqlSpecial Special
+  HiLink undocumentedKeyword Statement
+  HiLink tsqlSpecial Statement
   HiLink tsqlString String
   HiLink tsqlNumber Number
   HiLink tsqlVariable Identifier
@@ -1250,3 +1277,4 @@ endif
 
 let b:current_syntax = "sqlserver"
 
+" vim:ft=vim:fdm=marker:ff=unix
