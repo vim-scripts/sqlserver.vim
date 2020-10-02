@@ -3,4 +3,4 @@ This is a mirror of http://www.vim.org/scripts/script.php?script_id=2449
 This is a syntax file for SQL Server 2005/2008.  All TSQL and ODBC keywords are included, as well as a comprehensive list of functions, system variables, system stored procedures, server options, and future keywords (as defined by Microsoft).
 
 For complete source history or to file a bug report/issue (please use Wiki tab for this), please visit:
-http://github.com/hoffstein/vim-tsql/tree/master
+http://github.com/hoffstein/vim-tsql/tree/master..
